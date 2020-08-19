@@ -6,7 +6,7 @@
 ;; Keywords: convenience, tools
 ;; Homepage: https://github.com/purcell/reformatter.el
 ;; Package-Requires: ((emacs "24.3"))
-;; Package-Version: 0
+;; Version: 0
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -102,7 +102,7 @@ the `reformatter-define' macro."
           (write-region beg end input-file nil :quiet)
           (let* ((error-buffer (get-buffer-create (format "*%s errors*" name)))
                  (retcode
-                  (apply 'call-process program
+                  (apply #'call-process program
                          (when stdin input-file)
                          (list (list :file stdout-file) stderr-file)
                          nil
@@ -256,8 +256,8 @@ might use:
                    :keymap ,keymap
                    :group ,group
                    (if ,on-save-mode-name
-                       (add-hook 'before-save-hook ',buffer-fn-name nil t)
-                     (remove-hook 'before-save-hook ',buffer-fn-name t))))))))
+                       (add-hook 'before-save-hook #',buffer-fn-name nil t)
+                     (remove-hook 'before-save-hook #',buffer-fn-name t))))))))
     `(progn
        (defun ,region-fn-name (beg end &optional display-errors)
          "Reformats the region from BEG to END.
@@ -284,7 +284,7 @@ DISPLAY-ERRORS, shows a buffer if the formatting fails."
          (,region-fn-name (point-min) (point-max) display-errors))
 
        ;; This alias will be removed in a future version
-       (defalias ',name ',buffer-fn-name)
+       (defalias #',name #',buffer-fn-name)
 
        ,minor-mode-form)))
 
