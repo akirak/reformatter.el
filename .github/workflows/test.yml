@@ -24,12 +24,14 @@ jobs:
           - 27.1
           - snapshot
     steps:
-    - uses: cachix/install-nix-action@v9
-    - uses: purcell/setup-emacs@master
-      with:
-        version: ${{ matrix.emacs_version }}
-    - uses: actions/checkout@v1
+    - uses: cachix/install-nix-action@v10
+    - uses: actions/checkout@v2
+    - uses: akirak/elinter@v4
+      env:
+        EMACS_VERSION: ${{ matrix.emacs_version }}
     - name: Install deps for tests
       run: nix-env -iA nixpkgs.shfmt
     - name: Run tests
-      run: make
+      run: make test
+      env:
+        EMACS_VERSION: ${{ matrix.emacs_version }}
