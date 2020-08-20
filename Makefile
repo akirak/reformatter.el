@@ -2,7 +2,7 @@ package-lint:
 	elinter -l
 
 test:
-	elinter -t --ert -- reformatter-tests.el
+	elinter -t --ert --from-nixpkgs shfmt -- reformatter-tests.el
 
 compile:
 	elinter -b
